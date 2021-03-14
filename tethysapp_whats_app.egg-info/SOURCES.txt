@@ -1,0 +1,12 @@
+setup.py
+tethysapp/whats_app/__init__.py
+tethysapp/whats_app/app.py
+tethysapp/whats_app/controllers.py
+tethysapp/whats_app/handoff.py
+tethysapp/whats_app/tests/__init__.py
+tethysapp/whats_app/tests/tests.py
+tethysapp_whats_app.egg-info/PKG-INFO
+tethysapp_whats_app.egg-info/SOURCES.txt
+tethysapp_whats_app.egg-info/dependency_links.txt
+tethysapp_whats_app.egg-info/not-zip-safe
+tethysapp_whats_app.egg-info/top_level.txt

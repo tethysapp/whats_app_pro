@@ -1,0 +1,367 @@
+openapi: 3.0.0
+info:
+  description: This is an API that shares recipes
+  version: "1.0.0"
+  title: Recipe App API
+
+paths:
+  /accounts:
+    get:
+      tags:
+       - Accounts
+      summary: searches accounts
+      security:
+        - Bearer: []
+      description: |
+        By passing in the appropriate options, you can search for
+        a user in the system
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up user
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/accounts'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+       - Accounts
+      summary: adds an account
+      security:
+        - Bearer: []
+      description: Adds an account to the system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accounts'
+        description: Account to add
+      responses:
+        '201':
+          description: acount created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing account already exists
+    put:
+      tags:
+       - Accounts
+      summary: edits an account
+      security:
+        - Bearer: []
+      description: edits an account in the system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accounts'
+        description: Account to edit
+      responses:
+        '201':
+          description: acount edited
+        '400':
+          description: 'invalid input, object invalid'
+    delete:
+      tags:
+       - Accounts
+      security:
+        - Bearer: []
+      summary: deletes an account
+      description: deletes an account in the system
+      responses:
+        '201':
+          description: acount deleted
+        '400':
+          description: 'invalid input, object invalid'
+          
+  /recipelist:
+    get:
+      tags:
+        - Recipe List
+      summary: list all recipes from user
+      security:
+        - Bearer: []
+      x-controller: recipesList
+      x-operation: getRecipelist
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipeList'
+        '400':
+          description: bad input parameter
+      
+  /recipe/{recipeId}:
+    parameters:
+       - $ref: '#/components/parameters/RecipeId'
+    post: 
+      tags:
+       - Recipes
+      summary: create a new recipe
+      security:
+        - Bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/recipe'
+      responses:
+        '201':
+          description: recipe added
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing recipe already exists
+    get:
+      summary: get specific recipe info
+      tags:
+        - Recipes
+      security:
+        - Bearer: []
+      x-controller: recipes
+      x-operation: getRecipe
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipe'
+        '400':
+          description: bad input parameter
+    put:
+      summary: Update recipe
+      tags:
+       - Recipes
+      x-controller: recipes
+      x-operation: updateRecipe
+      security:
+        - Bearer: []
+      requestBody:
+        $ref: '#/components/requestBodies/Recipe'
+      responses:
+        200:
+          description: Success
+        401:
+          description: Unathorized
+        403:
+          description: Forbidden
+        404:
+          description: Not found
+        500:
+          description: Internal Server Error
+    delete:
+      summary: Delete recipe
+      tags:
+       - Recipes
+      x-controller: recipes
+      x-operation: deleteRecipe
+      security:
+        - Bearer: []
+      responses:
+        204:
+          description: Success
+        401:
+          description: Unathorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+  /recipe/{recipeId}/ingridents:
+    parameters:
+       - $ref: '#/components/parameters/RecipeId'
+    get:
+      summary: Get ingridients in recipe
+      tags:
+        - Ingridients
+      security:
+        - Bearer: []
+      x-controller: ingridients
+      x-operation: getIngridient
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ingridients'
+        '400':
+          description: bad input parameter
+    post:
+      summary: Add ingridients in recipe
+      tags:
+        - Ingridients
+      security:
+        - Bearer: []
+      x-controller: ingridients
+      x-operation: addIngridient
+      requestBody:
+        $ref: '#/components/requestBodies/Ingridient'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ingridients'
+        '400':
+          description: bad input parameter
+  /recipe/{recipeId}/images{imageId}:
+    parameters:
+       - $ref: '#/components/parameters/RecipeId'
+       - $ref: '#/components/parameters/ImageId'
+    post:
+      tags:
+       - Images
+      security:
+        - Bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/images'
+      responses:
+        '201':
+          description: image added
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing image already exists
+    delete:
+      summary: Delete image
+      tags:
+       - Images
+      responses:
+        204:
+          description: Success
+        401:
+          description: Unathorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+components:
+  parameters:
+    RecipeListId:
+      name: recipeListId
+      in: path
+      required: true
+      schema:
+        type: string
+    RecipeId:
+      name: recipeId
+      in: path
+      required: true
+      schema:
+        type: string
+    IngridientId:
+      name: ingridientId
+      in: path
+      required: true
+      schema:
+        type: string
+    ImageId:
+      name: imageId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+      Recipe:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/recipe'
+      Ingridient:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ingridients'
+  schemas:
+    recipeList:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        recipes:
+          type: object
+          properties:
+            recipeslist:
+              type: array
+              items:
+                $ref: '#/components/schemas/recipe'
+    recipe:
+      type: object
+      properties:
+        id: 
+          type: string
+          readOnly: true
+        name: 
+          type: string
+        rating:
+          type: integer
+        description:
+          type: string
+        season:
+          type: string
+        ingridients:
+          type: object
+          properties:
+            ingridientsList:
+              type: array
+              items:
+                $ref: '#/components/schemas/ingridients'
+         
+    ingridients:
+      type: object
+      properties:
+        ingridientId:
+          type: string
+        name:
+          type: string
+        amount:
+          type: integer
+        season:
+          type: string
+          
+    images:
+      type: object
+      properties:
+        image:
+          type: string
+          format: byte
+        imageId:
+          type: string
+        recipeId:
+          type: string
+          
+    accounts:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/IT-Foodies/recipe-box/1.0.0
