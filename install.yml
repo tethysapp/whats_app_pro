@@ -8,7 +8,16 @@ requirements:
   skip: false
   conda:
     channels:
+      - pip
+      - conda
     packages:
+      - twilio.twiml.messaging_response
+      - twilio.rest
+      - shortuuid
+      - hashlib
+      - uuid
+      - json
+      - requests
 
   pip:
 
