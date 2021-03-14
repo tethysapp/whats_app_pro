@@ -1,24 +1,15 @@
 # This file should be committed to your app code.
 version: 1.0
-# This should match the app - package name in your setup.py
 name: whats_app
 
 requirements:
-  # Putting in a skip true param will skip the entire section. Ignoring the option will assume it be set to False
   skip: false
   conda:
     channels:
-      - pip
-      - conda
+      - conda-forge
     packages:
-      - twilio.twiml.messaging_response
-      - twilio.rest
+      - twilio
       - shortuuid
-      - hashlib
-      - uuid
-      - json
       - requests
-
   pip:
-
 post:

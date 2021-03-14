@@ -3,6 +3,7 @@ tethysapp/whats_app/__init__.py
 tethysapp/whats_app/app.py
 tethysapp/whats_app/controllers.py
 tethysapp/whats_app/handoff.py
+tethysapp/whats_app/model.py
 tethysapp/whats_app/tests/__init__.py
 tethysapp/whats_app/tests/tests.py
 tethysapp_whats_app.egg-info/PKG-INFO
